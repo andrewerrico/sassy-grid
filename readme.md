@@ -1,3 +1,3 @@
-# Sassy Grid
+# Sassy Responsive Grid
 
-Responsive grid built with scss. Naming conventions are based off of Bootstrap.
+Responsive grid built with SCSS. Naming conventions are inspired by Bootstrap.
