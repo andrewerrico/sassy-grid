@@ -1,0 +1,61 @@
+@import 'grid-config';
+
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: $grid-padding*2;
+  padding-right: $grid-padding*2;
+
+  @extend %clearfix;
+  @include break-sm() {
+    width: 720px;
+  }
+  @include break-md() {
+    width: 900px;
+  }
+}
+.row {
+  margin-left: -$grid-padding;
+  margin-right: -$grid-padding;
+
+  @extend %clearfix;
+}
+
+[class*='col-'] {
+  float: left;
+  min-height: 1px;
+  padding-left: $grid-padding;
+  padding-right: $grid-padding;
+  position: relative;
+}
+
+@if $is_responsive == true {
+  @each $breakpoint in map-keys($grid-breakpoints) {
+    $grid-breakpoint-counter: ($grid-breakpoint-counter + 1);
+    @for $i from 1 through $grid-columns {
+      .col-#{$breakpoint}-#{$i} {
+        width: 100% / $grid-columns * $i;
+      }
+    }
+    @each $modifier in (pull, push, offset) {
+      @for $i from 1 through $grid-columns {
+        .#{$modifier}-#{$breakpoint}-#{$i} {
+          @include make-col-modifier($modifier, $i, $grid-columns);
+        }
+      }
+    }
+  }
+} @else if $is_responsive == false {
+  @for $i from 1 through $grid-columns {
+    .col-#{$i} {
+      width: 100% / $grid-columns * $i;
+    }
+  }
+  @each $modifier in (pull, push, offset) {
+    @for $i from 1 through $grid-columns {
+      .#{$modifier}-#{$i} {
+        @include make-col-modifier($modifier, $i, $grid-columns);
+      }
+    }
+  }
+}
