@@ -7,12 +7,7 @@
   padding-right: $grid-padding*2;
 
   @extend %clearfix;
-  @include break-sm() {
-    width: 720px;
-  }
-  @include break-md() {
-    width: 900px;
-  }
+
 }
 .row {
   margin-left: -$grid-padding;
@@ -29,33 +24,61 @@
   position: relative;
 }
 
+// check if responsive
 @if $is_responsive == true {
-  @each $breakpoint in map-keys($grid-breakpoints) {
-    $grid-breakpoint-counter: ($grid-breakpoint-counter + 1);
-    @for $i from 1 through $grid-columns {
-      .col-#{$breakpoint}-#{$i} {
-        width: 100% / $grid-columns * $i;
-      }
-    }
-    @each $modifier in (pull, push, offset) {
+  @each $breakpoint in map-keys($breakpoints) {
+    // if breakpoint is xs (0px) don't set a media query
+    @if $breakpoint == 'xs' {
+      // create those columns
       @for $i from 1 through $grid-columns {
-        .#{$modifier}-#{$breakpoint}-#{$i} {
-          @include make-col-modifier($modifier, $i, $grid-columns);
+        .col-#{$breakpoint}-#{$i} {
+          width: 100% / $grid-columns * $i;
+        }
+      }
+      // create modifiers if wanted
+      @if ($has_modifiers) {
+        @each $modifier in (pull, push, offset) {
+          @for $i from 1 through $grid-columns {
+            .#{$modifier}-#{$breakpoint}-#{$i} {
+              @include make-col-modifier($modifier, $i, $grid-columns);
+            }
+          }
+        }
+      }
+    } @else {
+      @media only screen and (min-width: map-get($breakpoints, $breakpoint)) {
+        @for $i from 1 through $grid-columns {
+          .col-#{$breakpoint}-#{$i} {
+            width: 100% / $grid-columns * $i;
+          }
+        }
+        // create modifiers if wanted
+        @if ($has_modifiers) {
+          @each $modifier in (pull, push, offset) {
+            @for $i from 1 through $grid-columns {
+              .#{$modifier}-#{$breakpoint}-#{$i} {
+                @include make-col-modifier($modifier, $i, $grid-columns);
+              }
+            }
+          }
         }
       }
     }
   }
 } @else if $is_responsive == false {
-  @for $i from 1 through $grid-columns {
-    .col-#{$i} {
-      width: 100% / $grid-columns * $i;
-    }
-  }
-  @each $modifier in (pull, push, offset) {
     @for $i from 1 through $grid-columns {
-      .#{$modifier}-#{$i} {
-        @include make-col-modifier($modifier, $i, $grid-columns);
+      .col-#{$i} {
+        width: 100% / $grid-columns * $i;
+      }
+    }
+    // create modifiers if wanted
+    @if ($has_modifiers) {
+      @each $modifier in (pull, push, offset) {
+        @for $i from 1 through $grid-columns {
+          .#{$modifier}-#{$i} {
+            @include make-col-modifier($modifier, $i, $grid-columns);
+          }
+        }
       }
     }
   }
-}

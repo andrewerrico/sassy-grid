@@ -1,17 +1,17 @@
-$is_responsive: true;
+$is_responsive: false;
+$has_modifiers: false;
 
-// BREAKPOINTS
-$xs: 544px;
-$sm: 768px;
-$md: 992px;
-$lg: 1200px;
+$breakpoints: (
+  xs: 0,
+  sm: 540px,
+  md: 768px,
+  lg: 990px,
+  xl: 1200px );
 
 // GRID
 $grid-columns: 12;
 $grid-padding: 15px;
 $grid-gutter: 0;
-$grid-breakpoints : ( xs: $xs, sm: $sm, md: $md, lg: $lg ) !default;
-$grid-breakpoint-counter: 0;
 
 // Grid modifiers
 @mixin make-col-modifier($type, $size, $columns) {
@@ -22,30 +22,6 @@ $grid-breakpoint-counter: 0;
 	} @else if $type == offset {
 		margin-left: percentage($size / $columns);
 	}
-}
-
-// Responsive breakpoints
-@mixin break-xs {
-  @media only screen and (min-width: $xs) {
-    @content;
-  }
-}
-
-@mixin break-sm {
-  @media only screen and (min-width: $sm) {
-    @content;
-  }
-}
-
-@mixin break-md {
-  @media only screen and (min-width: $md) {
-    @content;
-  }
-}
-@mixin break-lg {
-  @media only screen and (min-width: $lg) {
-    @content;
-  }
 }
 
 // clearfix placeholder
